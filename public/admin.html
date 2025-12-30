@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+</head>
+<body>
+
+<h2>Add New Car</h2>
+
+<input id="brand" placeholder="Brand">
+<input id="model" placeholder="Model">
+<input id="variant" placeholder="Variant">
+<input id="fuel" placeholder="Fuel Type">
+<input id="engine" placeholder="Engine">
+<input id="mileage" placeholder="Mileage">
+<input id="price" placeholder="Ex-showroom Price">
+<input id="insurance" placeholder="Insurance">
+
+<button onclick="addCar()">Add Car</button>
+
+<p id="msg"></p>
+
+<script>
+function addCar() {
+  fetch("/api/cars/add", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      brand: brand.value,
+      model: model.value,
+      variant: variant.value,
+      fuelType: fuel.value,
+      engine: engine.value,
+      mileage: mileage.value,
+      seating: 5,
+      exShowroomPrice: price.value,
+      insurance: insurance.value
+    })
+  })
+  .then(res => res.json())
+  .then(data => msg.innerText = data.message);
+}
+</script>
+
+</body>
+</html>

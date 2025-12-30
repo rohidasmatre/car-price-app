@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Car Price App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Car On-Road Price Calculator</h1>
+
+<select id="car"></select>
+
+<select id="city">
+  <option value="nagpur">Nagpur</option>
+  <option value="delhi">Delhi</option>
+  <option value="mumbai">Mumbai</option>
+</select>
+
+<button onclick="getPrice()">Calculate</button>
+
+<div id="result"></div>
+
+<hr>
+
+<h2>EMI Calculator</h2>
+<input id="rate" placeholder="Interest %" />
+<input id="years" placeholder="Years" />
+<button onclick="getEMI()">Calculate EMI</button>
+<p id="emi"></p>
+
+<script src="script.js"></script>
+</body>
+</html>
