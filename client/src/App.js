@@ -1,90 +1,63 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import CarDetails from "./components/car/CarDetails";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import EmiCalculator from "./components/EmiCalculator";
+import OnRoadCalculator from "./components/OnRoadCalculator";
+import CompareCars from "./components/CompareCars";
 
-function App() {
-  const [cars, setCars] = useState([]);
-  const [selectedCar, setSelectedCar] = useState(null);
+/* Pages (temporary placeholders) */
 
-  const [interest, setInterest] = useState(9);
-  const [years, setYears] = useState(5);
-  const [emi, setEmi] = useState(0);
-
-  useEffect(() => {
-axios.get("http://localhost:5000/api/cars")
-
-
-      .then(res => setCars(res.data));
-  }, []);
-
-  const calculateEMI = (price) => {
-    const P = price;
-    const R = interest / 12 / 100;
-    const N = years * 12;
-
-    const emiValue =
-      (P * R * Math.pow(1 + R, N)) /
-      (Math.pow(1 + R, N) - 1);
-
-    setEmi(Math.round(emiValue));
-  };
-
-  const selectCar = (car) => {
-    setSelectedCar(car);
-    calculateEMI(car.exShowroomPrice);
-  };
-
-  useEffect(() => {
-    if (selectedCar) {
-      calculateEMI(selectedCar.exShowroomPrice);
-    }
-  }, [,interest, years]);
-
+export default function App() {
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Phase 13 – EMI Calculator</h1>
+  
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-black">
+        <header className="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-brand">AutoPrice Pro</h1>
+          <nav className="space-x-6 text-slate-300">
+            <a href="#compare" className="hover:text-white">Compare</a>
+            <a href="#emi" className="hover:text-white">EMI</a>
+            <a href="#pricing" className="hover:text-white">Pricing</a>
+          </nav>
+        </header>
 
-      <h3>Select Car</h3>
-      <select onChange={e => selectCar(cars.find(c => c._id === e.target.value))}>
-        <option value="">Select</option>
-        {cars.map(car => (
-          <option key={car._id} value={car._id}>
-            {car.brand} {car.model}
-          </option>
-        ))}
-      </select>
+        <main className="max-w-7xl mx-auto px-6 py-24 text-center">
+          <h2 className="text-5xl font-extrabold text-white mb-6">
+            Smart Car Pricing & EMI Tools
+          </h2>
+          <p className="text-xl text-slate-300 max-w-3xl mx-auto mb-10">
+            Compare on-road prices, calculate EMI, and make confident car-buying
+            decisions in India.
+          </p>
 
-      {selectedCar && (
-        <>
-          <hr />
-          <h3>{selectedCar.brand} {selectedCar.model}</h3>
-          <p>Ex-Showroom Price: ₹{selectedCar.exShowroomPrice}</p>
+          <div className="flex justify-center gap-6">
+            <button className="px-8 py-4 rounded-xl bg-brand text-black font-semibold hover:scale-105 transition">
+              Get Started
+            </button>
+            <button className="px-8 py-4 rounded-xl border border-slate-500 text-white hover:bg-slate-800 transition">
+              Compare Cars
+            </button>
+          </div>
 
-          <label>Interest Rate: {interest}%</label><br />
-          <input
-            type="range"
-            min="6"
-            max="15"
-            value={interest}
-            onChange={e => setInterest(e.target.value)}
-          />
-
-          <br /><br />
-
-          <label>Loan Tenure: {years} years</label><br />
-          <input
-            type="range"
-            min="1"
-            max="7"
-            value={years}
-            onChange={e => setYears(e.target.value)}
-          />
-
-          <hr />
-          <h2>Monthly EMI: ₹{emi}</h2>
-        </>
-      )}
+          <Routes>
+            <Route path="/car/:id" element={<CarDetails />} />
+          </Routes>
+        
+      
+        <section id="emi" className="py-24">
+         <EmiCalculator />
+        </section>
+        <section id="onroad" className="py-24">
+         <OnRoadCalculator />
+        </section>
+        <section id="compare" className="py-24">
+         <CompareCars />
+        </section>
+      
+      </main>
+      
     </div>
+   
   );
 }
 
-export default App;
